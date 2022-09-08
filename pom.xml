@@ -3,8 +3,8 @@
   <groupId>RestAssuredAutomation</groupId>
   <artifactId>RestAssuredAutomation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  <dependencies>
+
+    <dependencies>
 
 <dependency>
     <groupId>io.rest-assured</groupId>
@@ -19,6 +19,13 @@
     <version>7.6.1</version>
     <scope>test</scope>
 </dependency>
+      <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-rest-assured -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>2.13.2</version>
+            <scope>test</scope>
+        </dependency>
 
 <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 <dependency>
@@ -44,7 +51,11 @@
       <version>4.13 </version>
       <scope>test</scope>
     </dependency>
-  
-  
-  </dependencies>
+    </dependencies>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+
 </project>
