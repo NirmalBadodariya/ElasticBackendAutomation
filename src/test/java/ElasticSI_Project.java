@@ -1,8 +1,8 @@
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -136,7 +136,7 @@ public class ElasticSI_Project {
 	}
 
 	@Test
-	public void getProjectTemp() throws ParseException {
+	public void getProjectCheckDataType() throws ParseException {
 		Map<String ,String> headers =new HashMap<String,String>(){
 			private static final long serialVersionUID = 1L;
 
@@ -156,11 +156,16 @@ public class ElasticSI_Project {
 				.andReturn().asString();
 		System.out.println(result);
 
-//		JSONObject jsonObj = new JSONObject(result);
-//		System.out.println("jsonOb: "+jsonObj);
+
 		JsonPath jsonPathEvaluator = new JsonPath(result);
 		String s = jsonPathEvaluator.getString("result.version");
 		System.out.println(s);
+
+		given()
+				.headers(headers)
+				.get("search-admin/api/projects")
+				.then().body("result.version",isA(ArrayList.class));
+
 	}
 
 	@Test
