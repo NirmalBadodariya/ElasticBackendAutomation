@@ -2,10 +2,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
@@ -136,7 +139,7 @@ public class ElasticSI_Project {
 	}
 
 	@Test
-	public void getProjectCheckDataType() throws ParseException {
+	public void getProjectCheckDataType() throws ParseException, IOException {
 		Map<String ,String> headers =new HashMap<String,String>(){
 			private static final long serialVersionUID = 1L;
 
@@ -158,13 +161,21 @@ public class ElasticSI_Project {
 
 
 		JsonPath jsonPathEvaluator = new JsonPath(result);
-		String s = jsonPathEvaluator.getString("result.version");
-		System.out.println(s);
+	//	System.out.println("jsonPathEvaluator "+ jsonPathEvaluator.getJsonObject("result.version"));
+		ArrayList a = jsonPathEvaluator.getJsonObject("result.engine_type");
+		for(Object arr :a)
+		{
+			if(arr!=null)
+			{
+				System.out.println(arr + " " + arr.getClass().getSimpleName());
+			}
+			else
+			{
+				System.out.println("***");
+			}
+		}
 
-		given()
-				.headers(headers)
-				.get("search-admin/api/projects")
-				.then().body("result.version",isA(ArrayList.class));
+
 
 	}
 
@@ -230,7 +241,7 @@ public class ElasticSI_Project {
 		given()
 		.headers(headers)
 		.when()
-		.get("https://search-admin-dev-mamb5phriq-uc.a.run.app/search-admin/api/projects/53ca594d-c13b-4367-867f-6c3af8a74c09")
+		.get("https://search-admin-dev-mamb5phriq-uc.a.run.app/search-admin/api/projects/7c14ed6a-7e73-459b-8ebc-47dab0187795")
 		.then()
 		.assertThat()
 		.statusCode(HttpStatus.SC_OK)
