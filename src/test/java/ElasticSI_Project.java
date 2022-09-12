@@ -149,10 +149,6 @@ public class ElasticSI_Project {
 			}
 
 		};
-		RequestSpecification request= RestAssured.given().headers(headers);
-		request.header("content-type","application/json;charset=UTF-8");
-		request.header("accept","application/json, text/plain, */*");
-		Response response = request.get("/search-admin/api/projects");
 		String result = given()
 				.headers(headers)
 				.get("search-admin/api/projects")
@@ -161,18 +157,19 @@ public class ElasticSI_Project {
 
 
 		JsonPath jsonPathEvaluator = new JsonPath(result);
-	//	System.out.println("jsonPathEvaluator "+ jsonPathEvaluator.getJsonObject("result.version"));
-		ArrayList a = jsonPathEvaluator.getJsonObject("result.engine_type");
+
+		ArrayList a = jsonPathEvaluator.getJsonObject("result.aiml_enabled");
 		for(Object arr :a)
 		{
 			if(arr!=null)
 			{
+				String dataType =arr.getClass().getSimpleName();
 				System.out.println(arr + " " + arr.getClass().getSimpleName());
+				if (!dataType.equals("String")){
+					Assert.assertEquals(true, false,"Not String");
+				}
 			}
-			else
-			{
-				System.out.println("***");
-			}
+
 		}
 
 
@@ -180,7 +177,7 @@ public class ElasticSI_Project {
 	}
 
 	@Test
-	public void getProjectCheckAvailability() throws ParseException {
+	public void getProjectCheckAvailabilityOfData() throws ParseException {
 		Map<String ,String> headers =new HashMap<String,String>(){
 			private static final long serialVersionUID = 1L;
 
@@ -196,9 +193,11 @@ public class ElasticSI_Project {
 				.get("search-admin/api/projects").then()
 				.body("$", hasKey("code"))
 				.body("$", hasKey("result"))
-				.body("$",hasKey("message")).toString();
+				.body("$",hasKey("message"))
+				.body("result.status",hasItemInArray("PUBLISHED"))
+				.body(containsString("version")).toString();
 
-
+				
 
 	}
 	@Test
@@ -237,18 +236,41 @@ public class ElasticSI_Project {
 				put("Authorization","Bearer "+ getToken());
 			}	
 		};
-		
+		String id = "7c14ed6a-7e73-459b-8ebc-47dab0187795";
 		given()
 		.headers(headers)
 		.when()
-		.get("https://search-admin-dev-mamb5phriq-uc.a.run.app/search-admin/api/projects/7c14ed6a-7e73-459b-8ebc-47dab0187795")
+		.get("search-admin/api/projects/"+id)
 		.then()
 		.assertThat()
 		.statusCode(HttpStatus.SC_OK)
 		.log().all();
 
 	}
-	
+
+	@Test
+	public void getProjectsByIdFake() throws ParseException {
+
+		Map<String ,String> headers =new HashMap<String,String>(){
+
+			private static final long serialVersionUID = 1L;
+
+			{
+				put("Accept","*/*");
+				put("Authorization","Bearer "+ getToken());
+			}
+		};
+		String id = "FakeID";
+	Response response =	given()
+				.headers(headers)
+				.when()
+				.get("search-admin/api/projects/"+id)
+				;
+
+		Assert.assertEquals(response.getStatusCode() /*actual value*/, 200 /*expected value*/,
+				"No projects with this id");
+
+	}
 	
 	@Test
 	public void getProjectsByIdOptimized() throws ParseException {
@@ -288,14 +310,21 @@ public class ElasticSI_Project {
 			}	
 		};
 		
-		given()
+	given()
 		.headers(headers)
 		.when()
-		.get("https://search-admin-dev-mamb5phriq-uc.a.run.app/search-admin/api/templates/extension")
+			.get("https://search-admin-dev-mamb5phriq-uc.a.run.app/search-admin/api/templates/extension")
 		.then()
 		.assertThat()
 		.statusCode(HttpStatus.SC_OK)
+
 		.log().all();
+
+		String result = given()
+				.headers(headers)
+				.get("search-admin/api/templates/extension")
+				.andReturn().asString();
+		System.out.println(result);
 
 	}
 	
