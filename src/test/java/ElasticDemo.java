@@ -8,9 +8,22 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class ElasticDemo {
-	
+import java.io.IOException;
 
+public class ElasticDemo {
+    private static final String id = "id";
+    private static final String date ="published_at";
+
+
+
+    public String getId() {
+        return id;
+    }
+
+
+    public String getDate() {
+        return date;
+    }
 
 
 }
