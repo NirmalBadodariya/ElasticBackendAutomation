@@ -3,7 +3,7 @@
     <test name="All">
         <classes>
             <class name="ElasticDemo"/>
-            <class name="ElasticSI_Project" />
+            <class name="ProjectModuleTestcases" />
         </classes>
     </test>
 </suite>
