@@ -158,4 +158,62 @@ public class Utility {
         return false;
     }
 
+
+    public boolean getProjectName(String dataOfFirst) {
+        boolean result = dataOfFirst.matches("[a-zA-Z@]+");
+//        System.out.println("Original String : " + dataOfFirst + "and result is :"+ result);
+        return result;
+    }
+
+    public boolean getType(String dataOfFirst) {
+
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("TEXT");
+        list.add("KEYWORD");
+        list.add("LONG");
+        list.add("INTEGER");
+        list.add("SHORT");
+        list.add("BYTE");
+        list.add("DOUBLE");
+        list.add("FLOAT");
+        list.add("HALF_FLOAT");
+        list.add("DATE");
+        list.add("DATE_NANOS");
+        list.add("BOOLEAN");
+        list.add("BINARY");
+        list.add("OBJECT");
+        list.add("NESTED");
+        list.add("INTEGER_RANGE");
+        list.add("FLOAT_RANGE");
+        list.add("DOUBLE_RANGE");
+        list.add("LONG_RANGE");
+        list.add("DATE_RANGE");
+        list.add("GEO_POINT");
+        list.add("GEO_SHAPE");
+
+        for (String element : list) {
+            if (dataOfFirst.equals(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean getPreviewType(String dataOfFirst) {
+
+        ArrayList<String> list = new ArrayList<String>();
+
+        list.add("NONE");
+        list.add("TITLE");
+        list.add("TEXT");
+        list.add("IMAGE");
+        list.add("LINK");
+
+        for (String element : list) {
+            if (dataOfFirst.equals(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
