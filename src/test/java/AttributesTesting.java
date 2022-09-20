@@ -29,11 +29,7 @@ public class AttributesTesting {
 
         String result = given()
                 .headers(headers)
-                .get("search-admin/api/projects/192233b4-1bd3-44d0-a57e-9a6c0425e58e/schemasDetails/94d299b6-2b42-4c4f-a604-ac9453bdf27f")
-//				.then()
-//				.assertThat()
-//				.statusCode(HttpStatus.SC_OK)
-//				.log().all();
+                .get("search-admin/api/projects/d4f33a63-6482-418f-b556-04f514836806/schemasDetails/7f34859a-9ca0-4c64-b141-92ba82ee6ee1")
                 .andReturn().asString();
 
         System.out.println("Project List : " + result);
@@ -86,6 +82,9 @@ public class AttributesTesting {
                             Assert.assertEquals(false, true, "Invalid Type");
                         }
                     }
+
+
+//                    checking boolean values for all the fields .
 
                     if (allFields.get(i).equals("is_filterable")) {
                         if (type.equals("OBJECT") && currentData.equals("true")){
