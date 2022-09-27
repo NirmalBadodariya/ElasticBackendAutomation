@@ -125,8 +125,9 @@ public class ProjectModuleTestcases {
 
 
 	}
+
 	@Test
-	public void getProjectCheckDataType() throws ParseException, IOException, java.text.ParseException {
+	public void getProjectCheck() throws ParseException, IOException, java.text.ParseException {
 		Map<String, String> headers = new HashMap<String, String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -245,33 +246,10 @@ public class ProjectModuleTestcases {
 
 			}
 
-
 			}
 		}
 
-	@Test
-	public void getProjectsOptimized() throws ParseException {
 
-		Map<String ,String> headers =new HashMap<String,String>(){
-			
-			private static final long serialVersionUID = 1L;
-
-			{
-				put("Accept","*/*");
-				put("Authorization","Bearer "+ utilObj.getToken());
-			}
-
-		};
-		
-		given()
-		.headers(headers)
-		.when()
-		.get("search-admin/api/projects/projectListing")
-		.then()
-		.assertThat()
-		.statusCode(HttpStatus.SC_OK).log().all();
-
-	}
 	
 	@Test
 	public void getProjectsById() throws ParseException {
@@ -364,7 +342,7 @@ public class ProjectModuleTestcases {
 		.then()
 		.assertThat()
 		.statusCode(HttpStatus.SC_OK)
-			.log().all();
+			;
 
 
 	}
@@ -416,6 +394,7 @@ public class ProjectModuleTestcases {
 		.log().all();
 
 	}
+
 	@Test
 	public void settingsDetails() throws ParseException {
 		Map<String ,String> headers =new HashMap<String,String>(){
@@ -439,11 +418,11 @@ public class ProjectModuleTestcases {
 
 		JsonPath jsonPathEvaluator = new JsonPath(result);
 
-		ArrayList a = jsonPathEvaluator.getJsonObject("result.id");
-		String idOfProject = (String) a.get(0);
-		ArrayList aa = jsonPathEvaluator.getJsonObject("result.rules_engine_enabled");
+		ArrayList ids = jsonPathEvaluator.getJsonObject("result.id");
+		String idOfProject = (String) ids.get(0);
+		ArrayList engineType = jsonPathEvaluator.getJsonObject("result.rules_engine_enabled");
 
-		boolean ruleEngine = (boolean) aa.get(0);
+		boolean ruleEngine = (boolean) engineType.get(0);
 		try {
 			UUID uuid = UUID.fromString(idOfProject);
 		}catch (Exception e){
@@ -551,9 +530,9 @@ public class ProjectModuleTestcases {
 		Response response =
 				request.contentType(ContentType.JSON).headers(headers)
 						.body(requestBody)
-						.put("/search-admin/api/projects/84cb73fe-f6a7-4289-a285-782823443fc0");
+						.put("/search-admin/api/projects/"+utilObj.getProjectId());
 
-		AssertJUnit.assertEquals(response.getStatusCode(), 200);
+		Assert.assertEquals(response.getStatusCode(), 200);
 
 
 	}
@@ -580,6 +559,30 @@ public class ProjectModuleTestcases {
 				.assertThat()
 				.statusCode(HttpStatus.SC_OK)
 				.log().all();
+
+	}
+
+	@Test
+	public void deleteProjectByIdFake() throws ParseException {
+
+		Map<String ,String> headers =new HashMap<String,String>(){
+
+			private static final long serialVersionUID = 1L;
+
+			{
+				put("Accept","*/*");
+				put("Authorization","Bearer "+ utilObj.getToken());
+			}
+		};
+
+	Response response =	given()
+				.headers(headers)
+				.when()
+				.delete("/search-admin/api/projects/fakeId")
+				;
+
+		Assert.assertEquals(response.getStatusCode() /*actual value*/, 404 /*expected value*/,
+				"No projects with this id to delete");
 
 	}
 

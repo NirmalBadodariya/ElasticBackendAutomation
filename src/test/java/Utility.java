@@ -19,7 +19,7 @@ public class Utility {
 
     private static final String email ="admin@weblinktechs.com";
     private static final String pass ="!adg@u^s5FE43q";
-    private static final String projectId ="b989a5e8-7095-4a0a-a57d-07ee46ba83de";
+    private static final String projectId ="2b86469a-c8b2-4614-81d1-ee3c49323fa8";
 
     public String getId() {
         return id;
@@ -199,6 +199,24 @@ public class Utility {
         return false;
     }
 
+    public boolean filterType(String dataOfFirst) {
+
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("[TERM]");
+        list.add("[TERMS]");
+        list.add("[MATCH]");
+        list.add("[EXISTS]");
+        list.add("[MULTI_MATCH]");
+        list.add("[RANGE]");
+        list.add("[WILDCARD]");
+
+        for (String element : list) {
+            if (dataOfFirst.equals(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean getPreviewType(String dataOfFirst) {
 
         ArrayList<String> list = new ArrayList<String>();
